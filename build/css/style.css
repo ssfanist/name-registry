@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono");
+@import url("https://fonts.googleapis.com/css?family=Alef");
+
+body,
+html {
+  color: white;
+  background: black;
+  width: 100% !important;
+  height: 100% !important;
+  font-family: "Roboto Mono", sans-serif !important;
+}
+ul,
+ol {
+  list-style: none;
+}
+ul,
+ol {
+  padding: 0;
+}
+a {
+  cursor: pointer;
+}
+a,
+a:hover,
+a:active,
+a:focus {
+  color: black;
+}
+.btn {
+  border-radius: 0;
+}
+.btn:active,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a:focus,
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  outline: none;
+  outline-offset: none;
+}
+
+/* Header Section */
+#header {
+  padding-top: 120px;
+}
+#header .title {
+  text-transform: uppercase;
+  margin: 40px 0;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 70px;
+}
+#header .content {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+#header .info-outer {
+  width: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+#header span {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+#header .info-inner {
+  font-size: 20px;
+  line-height: 20px;
+}
+#header .info-inner img {
+  width: 100px;
+  height: 20px;
+}
+#header .slider-outer {
+  width: 300px;
+  height: 32px;
+  margin: 30px;
+  overflow: hidden;
+  border-radius: 16px;
+  background-image: linear-gradient(to top, rgb(0, 11, 27) 0%, #000 100%);
+}
+#header .slider-inner {
+  height: 100%;
+  background-color: #5ca9fb;
+  border-radius: 0 16px 16px 0;
+}
+#header .random img {
+  margin: 10px 0;
+
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+.fade-in {
+  opacity: 1;
+}
+.fade-out {
+  opacity: 0;
+}
+
+#header .btn-mint {
+  text-transform: uppercase;
+  background: #2be5bb;
+  color: black;
+  width: calc(100% - 40px);
+  margin: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 0;
+  text-align: center;
+}
+#header .btn-mint:hover,
+#header .btn-mint:focus,
+#header .btn-mint.focus,
+#header .btn-mint:active,
+#header .btn-mint.active {
+  color: black;
+}
+
+.input {
+  background-color: transparent;
+  height: 40px;
+}
