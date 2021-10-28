@@ -8,7 +8,7 @@ import {
   useChainId,
   useBalance,
   setName,
-  // readName,
+  readName,
 } from "../data/contract";
 
 const TOAST_OPTIONS = {
@@ -19,22 +19,35 @@ const TOAST_OPTIONS = {
   pauseOnHover: false,
   draggable: false,
 };
-const TARGET_NETWORK = "3";
+const NETWORK_NAMES = {
+  1: "Mainnet",
+  3: "Ropsten",
+  4: "Rinkeby",
+  5: "Goerli",
+  42: "Kovan",
+}
+const TARGET_NETWORK = 3;
 
 export const Header = () => {
-  const [text, setText] = useState('');
+  const [nameText, setNameText] = useState('');
+  const [addrText, setAddrText] = useState('');
+  const [nameShow, setNameShow] = useState('');
   const [isLoading, setLoading] = useState(true);
 
   const isMetamaskEnabled = typeof window.ethereum !== "undefined";
   const chainId = useChainId(isMetamaskEnabled);
-  const balance = useBalance(isMetamaskEnabled && chainId === TARGET_NETWORK);
+  const balance = useBalance(isMetamaskEnabled);
 
   useEffect(() => {
     if (balance.length > 0) setLoading(false);
   }, [balance]);
 
-  const handleSet = async (count) => {
-    if (text.length  === 0) return;
+  const handleSet = async () => {
+    if (nameText.length === 0) return;
+    if (chainId !== TARGET_NETWORK) {
+      toast.info("Current network is not ropsten.", TOAST_OPTIONS);
+      return;
+    }
 
     setLoading(true);
     const account = await connectWithMetamask();
@@ -42,15 +55,33 @@ export const Header = () => {
       toast.error("Account not connected", TOAST_OPTIONS);
       return;
     }
-    setName(account, text)
-      .on("transactionHash", () => setLoading(false))
-      .on("receipt", () =>
-        toast.info("Name set successfully", TOAST_OPTIONS)
-      )
-      .on("error", () => {
+
+    setName(account, nameText)
+      .on("receipt", () => {
         setLoading(false);
-        toast.error("Name not set. Errors occurred", TOAST_OPTIONS);
+        toast.success("Name set successfully", TOAST_OPTIONS);
+      })
+      .on("error", (error) => {
+        setLoading(false);
+        toast.error("Name already used", TOAST_OPTIONS);
       });
+  };
+
+  const handleRead = async () => {
+    if (addrText.trim().length !== 42) {
+      toast.error("Invalid address", TOAST_OPTIONS);
+      return;
+    }
+    if (chainId !== TARGET_NETWORK) {
+      toast.info("Current network is not ropsten.", TOAST_OPTIONS);
+      return;
+    }
+
+    setLoading(true);
+    readName(addrText).then((name) => {
+      setLoading(false);
+      setNameShow(name || 'unregistered');
+    });
   };
 
   return (
@@ -64,15 +95,11 @@ export const Header = () => {
                 <span className="metamask">
                   Please install Metamask for proper use.
                 </span>
-              ) : chainId !== TARGET_NETWORK ? (
-                <span className="metamask">
-                  Current network is not the target network. Please switch to
-                  ropsten.
-                </span>
               ) : (
                 <div className="info-inner text-center">
+                  <p>{chainId && NETWORK_NAMES[chainId]}</p>
                   <p>Balance {!balance ? "0.00" : balance} ETH</p>
-                  <input className="input" value={text} onChange={e => setText(e.target.value)} />
+                  <input className="input" value={nameText} onChange={e => setNameText(e.target.value)} />
                   <a
                     onClick={handleSet}
                     className={`btn btn-mint btn-lg page-scroll ${
@@ -81,6 +108,16 @@ export const Header = () => {
                   >
                     Set Name
                   </a>
+                  <input className="input" value={addrText} onChange={e => setAddrText(e.target.value)} />
+                  <a
+                    onClick={handleRead}
+                    className={`btn btn-mint btn-lg page-scroll ${
+                      isMetamaskEnabled ? "" : "btn-disabled"
+                    }`}
+                  >
+                    Read Name
+                  </a>
+                  <p>{`>${nameShow}<`}</p>
                 </div>
               )}
             </div>

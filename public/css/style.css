@@ -116,7 +116,7 @@ a:focus,
   text-transform: uppercase;
   background: #2be5bb;
   color: black;
-  width: calc(100% - 40px);
+  width: 200px;
   margin: 20px;
   font-size: 20px;
   font-weight: 600;
